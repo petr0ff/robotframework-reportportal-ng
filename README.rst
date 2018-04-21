@@ -33,10 +33,13 @@ Parameters list:
         RP_LAUNCH_DOC - documentation of new launch.
         RP_LAUNCH_TAGS - additional tags to mark new launch.
 
-Example
--------
+Examples
+--------
 
-Example command to run test using pabot with report portal listener.
+Using `Pybot`
+`````````````
+
+Example command to run test using `Pybot` with report portal listener.
 
 .. code:: bash
 
@@ -46,14 +49,22 @@ Example command to run test using pabot with report portal listener.
     --variable RP_LAUNCH:"Demo Tests" \
     --variable RP_PROJECT:DEMO_USER_PERSONAL test_folder
 
-Running using Pabot test runner
----
+Using `Pabot`
+`````````````
 
-To run your tests with listener using pabot, you need to specify a launch id through its arguments. This is made so because of specific Robot Framework architecture. Pabot separates your test suite on multiple tests and runs it in separate processes of pybot. Meanwhile, pybot has its own separate global state and it is absolutely does not connected with other instances of pybot being ran by Pabot. When test execution ends, some of those threads must close Report Portal launch, but becase this parallelism is not based on native python threads, there is no options to choose which thread should be the one who close the report portal launch.
+To run your tests with the listener using pabot, you need to specify prevously created from outuse launch id through its arguments. 
 
-To solve this problem, report portal listener has this launch id argument. You create a launch outside of the listener and close the launch from outside of the listener and thus it guaranteed that launch was created and will be closed 100%.
+This so because of the specific Robot Framework architecture. Pabot separates your test suite on multiple tests and runs it in separate processes of `pybot`. 
 
-Example usage with a launch id:
+Meanwhile, pybot has its own separate global state and it is absolutely not connected with еру other instances of pybot being ran by pabot.
+
+When test execution ends, some of those threads must close Report Portal launch, but because pabot parallelism is not based on the native python threads, there is no any option to choose which one and only thread must close the Report Portal launch.
+
+To solve this problem, report portal listener has its own launch id argument. 
+
+You create a launch from the outside of the listener and close it there and thus it guarantees that the launch was created and will be closed at 100%.
+
+Example usage with the launch id argument:
 
 .. code:: basj
 
