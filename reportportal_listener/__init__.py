@@ -63,7 +63,7 @@ class reportportal_listener(object):  # noqa
             message: current message passed from test by test executor.
         """
         attachment = None
-        if (message['html'] == 'yes'):
+        if message.get('html', 'no') == 'yes':
             screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
             if screenshot:
                 kwname = '{}'.format(screenshot.group(0))
