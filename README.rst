@@ -56,7 +56,7 @@ To run your tests with the listener using pabot, you need to specify prevously c
 
 This so because of the specific Robot Framework architecture. Pabot separates your test suite on multiple tests and runs it in separate processes of `pybot`. 
 
-Meanwhile, pybot has its own separate global state and it is absolutely not connected with еру other instances of pybot being ran by pabot.
+Meanwhile, pybot has its own separate global state and it is absolutely not connected with the other instances of pybot being ran by pabot.
 
 When test execution ends, some of those threads must close Report Portal launch, but because pabot parallelism is not based on the native python threads, there is no any option to choose which one and only thread must close the Report Portal launch.
 
