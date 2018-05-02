@@ -99,19 +99,19 @@ class reportportal_listener(object):  # noqa
         self.current_scope = "SUITE"
         if attributes["id"] == FIRST_SUITE_ID:
             self._init_service()
-            # in case running tests using pybot we can create launch automatically
-            if self.pabot_used:
-                if self._launch_id is None:
-                    raise Exception("launch_id is not provided. "
-                                    "Please, correctly initialize listener with launch_id argument.")
+            # if launch id is specified, use it
+            # otherwise create launch automatically
+            if self._launch_id is not None:
                 self.robot_service.rp.launch_id = self._launch_id
             else:
+                if self.pabot_used:
+                    raise Exception("Pabot used but launch_id is not provided. "
+                                    "Please, correctly initialize listener with launch_id argument.")			
                 # fill launch description with contents of corresponding variable value
                 suite.doc = self.robot_variables.launch_doc
                 # automatically creating new report portal launch
                 launch_id = self.robot_service.start_launch(launch_name=self.robot_variables.launch_name,
                                                             launch=suite)
-                self._launch_id = launch_id
                 # save launch id for service
                 self.robot_service.rp.launch_id = launch_id
                 # initialize report portal service to use in test run
@@ -132,8 +132,8 @@ class reportportal_listener(object):  # noqa
 
         if attributes["id"] == FIRST_SUITE_ID:
             self.robot_service.terminate_service()
-            # in case running tests using pybot we can finish launch automatically
-            if not self.pabot_used:
+            # in case launch was created automatically, we can finish launch automatically
+            if self._launch_id is None:
                 # automatically close report portal launch
                 self.robot_service.finish_launch(launch=suite)
             # terminating service
