@@ -130,6 +130,9 @@ class reportportal_listener(object):  # noqa
         suite = Suite(attributes=attributes)
         self.current_scope = "SUITE"
 
+        if attributes['tests']:
+            self.robot_service.finish_suite(suite=suite)
+
         if attributes["id"] == FIRST_SUITE_ID:
             self.robot_service.terminate_service()
             # in case launch was created automatically, we can finish launch automatically
@@ -139,8 +142,6 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
-        if attributes['tests']:
-            self.robot_service.finish_suite(suite=suite)
 
     def start_test(self, name, attributes):
         """Do additional actions before test run.
