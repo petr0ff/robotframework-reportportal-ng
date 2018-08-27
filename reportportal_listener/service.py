@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import codecs
+import logging
 import re
 from time import time
 
@@ -183,7 +184,8 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": "STEP"
         }
-        RobotService.rp.start_test_item(**start_rq)
+        item_id = RobotService.rp.start_test_item(**start_rq)
+        logging.info("ID for test %s is %s", test.name, item_id)
 
     @staticmethod
     def finish_test(issue=None, test=None):
