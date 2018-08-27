@@ -154,7 +154,11 @@ class reportportal_listener(object):  # noqa
         test = Test(name=name, attributes=attributes)
         self.current_scope = "TEST"
         item_id = self.robot_service.start_test(test=test)
-        logging.info("ID for test %s is %s", test.name, item_id)
+        message = {
+            "message": u"[Start test] Name is{name}, ID={id}".format(name=name, id=item_id),
+            "level": "INFO"
+        }
+        RobotService.log(message=message)
 
     def end_test(self, name, attributes):
         """Do additional actions after test run.
