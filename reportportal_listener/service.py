@@ -184,8 +184,7 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": "STEP"
         }
-        item_id = RobotService.rp.start_test_item(**start_rq)
-        logging.info("ID for test %s is %s", test.name, item_id)
+        return RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
     def finish_test(issue=None, test=None):

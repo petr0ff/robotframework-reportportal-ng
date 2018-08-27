@@ -142,7 +142,6 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
-
     def start_test(self, name, attributes):
         """Do additional actions before test run.
 
@@ -154,7 +153,8 @@ class reportportal_listener(object):  # noqa
         """
         test = Test(name=name, attributes=attributes)
         self.current_scope = "TEST"
-        self.robot_service.start_test(test=test)
+        item_id = self.robot_service.start_test(test=test)
+        logging.info("ID for test %s is %s", test.name, item_id)
 
     def end_test(self, name, attributes):
         """Do additional actions after test run.
