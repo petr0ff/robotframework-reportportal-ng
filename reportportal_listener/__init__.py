@@ -55,46 +55,47 @@ class reportportal_listener(object):  # noqa
         return self._pabot_used
 
     def log_message(self, message):
-        """Log message of current executing keyword.
-
-        This method sends each test log message to Report Portal.
-
-        Args:
-            message: current message passed from test by test executor.
-        """
-
-        # Skip logging unnecessary information
-        black_list = ["${stdout}",
-                      "${stderr}",
-                      "${rc}",
-                      "running",
-                      "${sql}",
-                      "${comm}",
-                      "docker exec",
-                      "Executing command",
-                      "Command exited",
-                      "@{lines",
-                      "${tmp_dict}",
-                      "${parts}",
-                      "${dag_tasks}",
-                      "_dict",
-                      "List has one item",
-                      "${log}"]
-        if not any(x in message for x in black_list):
-            attachment = None
-            if message.get('html', 'no') == 'yes':
-                screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
-                if screenshot:
-                    kwname = '{}'.format(screenshot.group(0))
-                    kwname = os.path.join(BuiltIn().get_variable_value('${OUTPUT_DIR}'), kwname)
-                    with open(kwname, "rb") as fh:
-                        attachment = {
-                                    "name": os.path.basename(kwname),
-                                    "data": fh.read(),
-                                    "mime": guess_type(kwname)[0] or "application/octet-stream"
-                                }
-
-            RobotService.log(message, attachment)
+        return
+        # """Log message of current executing keyword.
+        #
+        # This method sends each test log message to Report Portal.
+        #
+        # Args:
+        #     message: current message passed from test by test executor.
+        # """
+        #
+        # # Skip logging unnecessary information
+        # black_list = ["${stdout}",
+        #               "${stderr}",
+        #               "${rc}",
+        #               "running",
+        #               "${sql}",
+        #               "${comm}",
+        #               "docker exec",
+        #               "Executing command",
+        #               "Command exited",
+        #               "@{lines",
+        #               "${tmp_dict}",
+        #               "${parts}",
+        #               "${dag_tasks}",
+        #               "_dict",
+        #               "List has one item",
+        #               "${log}"]
+        # if not any(x in message for x in black_list):
+        #     attachment = None
+        #     if message.get('html', 'no') == 'yes':
+        #         screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
+        #         if screenshot:
+        #             kwname = '{}'.format(screenshot.group(0))
+        #             kwname = os.path.join(BuiltIn().get_variable_value('${OUTPUT_DIR}'), kwname)
+        #             with open(kwname, "rb") as fh:
+        #                 attachment = {
+        #                             "name": os.path.basename(kwname),
+        #                             "data": fh.read(),
+        #                             "mime": guess_type(kwname)[0] or "application/octet-stream"
+        #                         }
+        #
+        #     RobotService.log(message, attachment)
 
     def _init_service(self):
         """Init report portal service."""
