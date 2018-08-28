@@ -64,7 +64,11 @@ class reportportal_listener(object):  # noqa
         Args:
             message: current message passed from test by test executor.
         """
-        if message.get('level', 'no') == 'FAIL':
+        black_list = ["check_completed",
+                      "'\"running\"==\"failed\" or \"running\"==\"success\"'"]
+
+        if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
+            message['message'] = "[FAIL] " + message['message']
             attachment = None
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
@@ -226,24 +230,3 @@ class reportportal_listener(object):  # noqa
         else:
             if self.top_level_kw_name == name:
                 self.top_level_kw_name = None
-                if kw.status == 'FAIL':
-                    self._test_level_keyword_fail = True
-                    message = {
-                        "message": u"[Failed] {name} [Test data] {data}".format(name=name,
-                                                                                data=', '.join(attributes['args'])),
-                        "level": "FAIL"
-                    }
-                    RobotService.log(message=message)
-            else:
-                kw_data = "Failed {name} {data}".format(name=name, data=', '.join(attributes['args']))
-                # Do not log data from Wait Keyword Succeeded
-                black_list = ["check_completed",
-                              "\"${status}\"==\"failed\" or \"${status}\"==\"success\""]
-                if kw.status == 'FAIL' and not any(x in kw_data for x in black_list) \
-                        and not self._test_level_keyword_fail:
-                    message = {
-                        "message": u"[Failed] {name} [Test data] {data}".format(name=name,
-                                                                                data=', '.join(attributes['args'])),
-                        "level": "FAIL"
-                    }
-                    RobotService.log(message=message)
