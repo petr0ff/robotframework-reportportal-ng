@@ -64,7 +64,7 @@ class reportportal_listener(object):  # noqa
         Args:
             message: current message passed from test by test executor.
         """
-        if self._log_nested_keywords:
+        if message.get('level', 'no') == 'FAIL':
             attachment = None
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
