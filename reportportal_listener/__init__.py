@@ -227,14 +227,14 @@ class reportportal_listener(object):  # noqa
                 self.top_level_kw_name = None
                 if kw.status == 'FAIL':
                     message = {
-                        "message": u"[Test Keyword End] {name}".format(name=name),
-                        "level": "INFO"
+                        "message": u"Failed {name}".format(name=name),
+                        "level": "ERROR"
                     }
                     RobotService.log(message=message)
             else:
                 if kw.status == 'FAIL':
                     message = {
                         "message": u"[Keyword End] {name}".format(name=name),
-                        "level": "DEBUG"
+                        "level": "ERROR"
                     }
                     RobotService.log(message=message)
