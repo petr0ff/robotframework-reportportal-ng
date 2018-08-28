@@ -157,7 +157,7 @@ class reportportal_listener(object):  # noqa
         self.current_scope = "TEST"
         item_id = self.robot_service.start_test(test=test)
         message = {
-            "message": u"[Start test-case] {name}".format(name=name),
+            "message": u"[Test-case] {name}".format(name=name),
             "level": "INFO"
         }
         RobotService.log(message=message)
@@ -200,7 +200,7 @@ class reportportal_listener(object):  # noqa
             if self.top_level_kw_name is None:
                 self.top_level_kw_name = name
                 message = {
-                    "message": u"[Execute step] {name} [test data] {data}".format(name=name,
+                    "message": u"[Step] {name} [Test data] {data}".format(name=name,
                                                                                   data=', '.join(attributes['args'])),
                     "level": "INFO"
                 }
@@ -227,19 +227,20 @@ class reportportal_listener(object):  # noqa
                 self.top_level_kw_name = None
                 if kw.status == 'FAIL':
                     message = {
-                        "message": u"Failed {name} {data}".format(name=name,
-                                                                  data=', '.join(attributes['args'])),
+                        "message": u"[Failed] {name} [Test data] {data}".format(name=name,
+                                                                                data=', '.join(attributes['args'])),
                         "level": "FAIL"
                     }
                     RobotService.log(message=message)
             else:
                 kw_data = "Failed {name} {data}".format(name=name, data=', '.join(attributes['args']))
+                # Do not log data from Wait Keyword Succeeded
                 black_list = ["check_completed",
                               "\"${status}\"==\"failed\" or \"${status}\"==\"success\""]
                 if kw.status == 'FAIL' and not any(x in kw_data for x in black_list):
                     message = {
-                        "message": u"Failed {name} {data}".format(name=name,
-                                                                  data=', '.join(attributes['args'])),
+                        "message": u"[Failed] {name} [Test data] {data}".format(name=name,
+                                                                                data=', '.join(attributes['args'])),
                         "level": "FAIL"
                     }
                     RobotService.log(message=message)
