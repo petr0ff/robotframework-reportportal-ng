@@ -225,22 +225,22 @@ class reportportal_listener(object):  # noqa
         else:
             if self.top_level_kw_name == name:
                 self.top_level_kw_name = None
-                if kw.status == 'FAIL':
+                # if kw.status == 'FAIL':
+                #     message = {
+                #         "message": u"[Failed] {name} [Test data] {data}".format(name=name,
+                #                                                                 data=', '.join(attributes['args'])),
+                #         "level": "FAIL"
+                #     }
+                #     RobotService.log(message=message)
+            else:
+                kw_data = "Failed {name} {data}".format(name=name, data=', '.join(attributes['args']))
+                # Do not log data from Wait Keyword Succeeded
+                black_list = ["check_completed",
+                              "\"${status}\"==\"failed\" or \"${status}\"==\"success\""]
+                if kw.status == 'FAIL' and not any(x in kw_data for x in black_list):
                     message = {
                         "message": u"[Failed] {name} [Test data] {data}".format(name=name,
                                                                                 data=', '.join(attributes['args'])),
                         "level": "FAIL"
                     }
                     RobotService.log(message=message)
-            # else:
-            #     kw_data = "Failed {name} {data}".format(name=name, data=', '.join(attributes['args']))
-            #     # Do not log data from Wait Keyword Succeeded
-            #     black_list = ["check_completed",
-            #                   "\"${status}\"==\"failed\" or \"${status}\"==\"success\""]
-            #     if kw.status == 'FAIL' and not any(x in kw_data for x in black_list):
-            #         message = {
-            #             "message": u"[Failed] {name} [Test data] {data}".format(name=name,
-            #                                                                     data=', '.join(attributes['args'])),
-            #             "level": "FAIL"
-            #         }
-            #         RobotService.log(message=message)
