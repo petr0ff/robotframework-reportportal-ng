@@ -202,7 +202,7 @@ class reportportal_listener(object):  # noqa
                 message = {
                     "message": u"[Execute step] {name} [test data] {data}".format(name=name,
                                                                                   data=', '.join(attributes['args'])),
-                    "level": "INFO"
+                    "level": "FAIL"
                 }
                 RobotService.log(message=message)
 
@@ -228,7 +228,7 @@ class reportportal_listener(object):  # noqa
                 if kw.status == 'FAIL':
                     message = {
                         "message": u"Failed {name}".format(name=name),
-                        "level": "ERROR"
+                        "level": "FAIL"
                     }
                     RobotService.log(message=message)
             else:
