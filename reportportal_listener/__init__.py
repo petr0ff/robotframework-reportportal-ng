@@ -42,7 +42,7 @@ class reportportal_listener(object):  # noqa
         self._launch_id = launch_id
         self._pabot_used = None
         self._suite_setup_failed = False
-        self._log_nested_keywords = False
+        self._log_nested_keywords = True
         self._test_level_keyword_fail = False
 
     @property

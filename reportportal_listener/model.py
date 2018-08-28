@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class Suite(object):
     """Suite object in Report Portal."""
 
