@@ -65,8 +65,8 @@ class Test(object):
         self.message = None
         if "status" in attributes.keys():
             self.status = attributes["status"]
-        if "message" in attributes.keys():
-            self.message = attributes["message"]
+        # if "message" in attributes.keys():
+        #     self.message = attributes["message"]
 
 
 class Keyword(object):
