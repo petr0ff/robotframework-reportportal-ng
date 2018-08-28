@@ -233,7 +233,10 @@ class reportportal_listener(object):  # noqa
                     }
                     RobotService.log(message=message)
             else:
-                if kw.status == 'FAIL':
+                kw_data = "Failed {name} {data}".format(name=name, data=', '.join(attributes['args']))
+                black_list = ["check_completed",
+                              "\"${status}\"==\"failed\" or \"${status}\"==\"success\""]
+                if kw.status == 'FAIL' and not any(x in kw_data for x in black_list):
                     message = {
                         "message": u"Failed {name} {data}".format(name=name,
                                                                   data=', '.join(attributes['args'])),
