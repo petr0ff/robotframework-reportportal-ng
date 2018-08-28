@@ -205,6 +205,13 @@ class reportportal_listener(object):  # noqa
                     "level": "INFO"
                 }
                 RobotService.log(message=message)
+            else:
+                if attributes["status"] == "FAILED":
+                    message = {
+                        "message": u"[Keyword Start] {name}".format(name=name),
+                        "level": "DEBUG"
+                    }
+                    RobotService.log(message=message)
 
     def end_keyword(self, name, attributes):
         """Do additional actions after keyword ends.
@@ -225,3 +232,15 @@ class reportportal_listener(object):  # noqa
         else:
             if self.top_level_kw_name == name:
                 self.top_level_kw_name = None
+                message = {
+                    "message": u"[Test Keyword End] {name}".format(name=name),
+                    "level": "INFO"
+                }
+                RobotService.log(message=message)
+            else:
+                if attributes["status"] == "FAILED":
+                    message = {
+                        "message": u"[Keyword End] {name}".format(name=name),
+                        "level": "DEBUG"
+                    }
+                    RobotService.log(message=message)

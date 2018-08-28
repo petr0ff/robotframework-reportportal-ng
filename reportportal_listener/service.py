@@ -233,26 +233,25 @@ class RobotService(object):
 
     @staticmethod
     def log(message, attachment=None):
-        return
-        # """Log message in Report Portal.
-        #
-        # Args:
-        #     message: message object model.
-        #     attachment: attachment object. Example: file or screen shot.
-        # """
-        #
-        # if PY2:
-        #     # hack to identify and decode unicode-escaped strings on python2
-        #     message["message"] = _decode_escapes(message["message"])
-        #
-        # sl_rq = {
-        #     "time": timestamp(),
-        #     "message": message["message"],
-        #     "level": RobotService.log_level_mapping[message["level"]],
-        #     "attachment": attachment,
-        # }
-        # try:
-        #     RobotService.rp.log(**sl_rq)
-        # except ResponseError as e:
-        #     RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
-        #                                                       "See logs of a certain test.\n{}".format(str(e)))
+        """Log message in Report Portal.
+
+        Args:
+            message: message object model.
+            attachment: attachment object. Example: file or screen shot.
+        """
+
+        if PY2:
+            # hack to identify and decode unicode-escaped strings on python2
+            message["message"] = _decode_escapes(message["message"])
+
+        sl_rq = {
+            "time": timestamp(),
+            "message": message["message"],
+            "level": RobotService.log_level_mapping[message["level"]],
+            "attachment": attachment,
+        }
+        try:
+            RobotService.rp.log(**sl_rq)
+        except ResponseError as e:
+            RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
+                                                              "See logs of a certain test.\n{}".format(str(e)))
