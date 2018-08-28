@@ -202,12 +202,12 @@ class reportportal_listener(object):  # noqa
                     "level": "INFO"
                 }
                 RobotService.log(message=message)
-            # else:
-            #     message = {
-            #         "message": u"[Keyword Start] {name}".format(name=name),
-            #         "level": "DEBUG"
-            #     }
-            #     RobotService.log(message=message)
+            else:
+                message = {
+                    "message": u"[Keyword Start] {name}".format(name=name),
+                    "level": "DEBUG"
+                }
+                RobotService.log(message=message)
 
     def end_keyword(self, name, attributes):
         """Do additional actions after keyword ends.
@@ -233,9 +233,9 @@ class reportportal_listener(object):  # noqa
                     "level": "INFO"
                 }
                 RobotService.log(message=message)
-            # else:
-            #     message = {
-            #         "message": u"[Keyword End] {name}".format(name=name),
-            #         "level": "DEBUG"
-            #     }
-            #     RobotService.log(message=message)
+            else:
+                message = {
+                    "message": u"[Keyword End] {name}".format(name=name),
+                    "level": "DEBUG"
+                }
+                RobotService.log(message=message)

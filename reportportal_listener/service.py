@@ -240,6 +240,26 @@ class RobotService(object):
             message: message object model.
             attachment: attachment object. Example: file or screen shot.
         """
+
+        # Skip logging unnecessary information
+        black_list = ["${stdout}",
+                      "${stderr}",
+                      "${rc}",
+                      "running",
+                      "${sql}",
+                      "${comm}",
+                      "docker exec",
+                      "Executing command",
+                      "Command exited",
+                      "@{lines",
+                      "${tmp_dict}",
+                      "${parts}",
+                      "${dag_tasks}",
+                      "_dict",
+                      "List has one item",
+                      "${log}"]
+        if any(x in message for x in black_list):
+            return
         if PY2:
             # hack to identify and decode unicode-escaped strings on python2
             message["message"] = _decode_escapes(message["message"])
