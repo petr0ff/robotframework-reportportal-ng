@@ -205,14 +205,6 @@ class reportportal_listener(object):  # noqa
                     "level": "INFO"
                 }
                 RobotService.log(message=message)
-            else:
-                kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
-                if kw.status == 'FAIL':
-                    message = {
-                        "message": u"[Keyword Start] {name}".format(name=name),
-                        "level": "DEBUG"
-                    }
-                    RobotService.log(message=message)
 
     def end_keyword(self, name, attributes):
         """Do additional actions after keyword ends.
@@ -223,8 +215,8 @@ class reportportal_listener(object):  # noqa
             name: keyword name.
             attributes: keyword attributes.
         """
+        kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
         if attributes['type'] in ['Setup', 'Teardown'] and self.current_scope == 'SUITE':
-            kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
             # We can add additional information to test if suite setup failed
             # to help analyzer mark those with proper type.
             if kw.status == 'FAIL':
@@ -233,13 +225,13 @@ class reportportal_listener(object):  # noqa
         else:
             if self.top_level_kw_name == name:
                 self.top_level_kw_name = None
-                message = {
-                    "message": u"[Test Keyword End] {name}".format(name=name),
-                    "level": "INFO"
-                }
-                RobotService.log(message=message)
+                if kw.status == 'FAIL':
+                    message = {
+                        "message": u"[Test Keyword End] {name}".format(name=name),
+                        "level": "INFO"
+                    }
+                    RobotService.log(message=message)
             else:
-                kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
                 if kw.status == 'FAIL':
                     message = {
                         "message": u"[Keyword End] {name}".format(name=name),
