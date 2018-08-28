@@ -72,10 +72,10 @@ class reportportal_listener(object):  # noqa
                     kwname = os.path.join(BuiltIn().get_variable_value('${OUTPUT_DIR}'), kwname)
                     with open(kwname, "rb") as fh:
                         attachment = {
-                                    "name": os.path.basename(kwname),
-                                    "data": fh.read(),
-                                    "mime": guess_type(kwname)[0] or "application/octet-stream"
-                                }
+                            "name": os.path.basename(kwname),
+                            "data": fh.read(),
+                            "mime": guess_type(kwname)[0] or "application/octet-stream"
+                        }
 
             RobotService.log(message, attachment)
 
@@ -108,7 +108,7 @@ class reportportal_listener(object):  # noqa
             else:
                 if self.pabot_used:
                     raise Exception("Pabot used but launch_id is not provided. "
-                                    "Please, correctly initialize listener with launch_id argument.")			
+                                    "Please, correctly initialize listener with launch_id argument.")
                 # fill launch description with contents of corresponding variable value
                 suite.doc = self.robot_variables.launch_doc
                 # automatically creating new report portal launch
@@ -202,7 +202,7 @@ class reportportal_listener(object):  # noqa
                 message = {
                     "message": u"[Execute step] {name} [test data] {data}".format(name=name,
                                                                                   data=', '.join(attributes['args'])),
-                    "level": "FAIL"
+                    "level": "INFO"
                 }
                 RobotService.log(message=message)
 
@@ -227,14 +227,16 @@ class reportportal_listener(object):  # noqa
                 self.top_level_kw_name = None
                 if kw.status == 'FAIL':
                     message = {
-                        "message": u"Failed {name}".format(name=name),
+                        "message": u"Failed {name} {data}".format(name=name,
+                                                                  data=', '.join(attributes['args'])),
                         "level": "FAIL"
                     }
                     RobotService.log(message=message)
             else:
                 if kw.status == 'FAIL':
                     message = {
-                        "message": u"[Keyword End] {name}".format(name=name),
-                        "level": "ERROR"
+                        "message": u"Failed {name} {data}".format(name=name,
+                                                                  data=', '.join(attributes['args'])),
+                        "level": "FAIL"
                     }
                     RobotService.log(message=message)
