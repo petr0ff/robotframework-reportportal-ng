@@ -205,8 +205,9 @@ class reportportal_listener(object):  # noqa
             if self.top_level_kw_name is None:
                 self.top_level_kw_name = name
                 message = {
-                    "message": u"[Step] {name} [Test data] {data}".format(name=name,
-                                                                                  data=', '.join(attributes['args'])),
+                    "message": u"[{type}] {name} [Test data] {data}".format(type=attributes['type'],
+                                                                            name=name,
+                                                                            data=', '.join(attributes['args'])),
                     "level": "INFO"
                 }
                 RobotService.log(message=message)
