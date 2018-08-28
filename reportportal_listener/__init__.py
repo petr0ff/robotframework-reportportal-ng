@@ -206,7 +206,8 @@ class reportportal_listener(object):  # noqa
                 }
                 RobotService.log(message=message)
             else:
-                if attributes["status"] == "FAILED":
+                kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
+                if kw.status == 'FAIL':
                     message = {
                         "message": u"[Keyword Start] {name}".format(name=name),
                         "level": "DEBUG"
@@ -238,7 +239,8 @@ class reportportal_listener(object):  # noqa
                 }
                 RobotService.log(message=message)
             else:
-                if attributes["status"] == "FAILED":
+                kw = Keyword(name=name, parent_type=self.current_scope, attributes=attributes)
+                if kw.status == 'FAIL':
                     message = {
                         "message": u"[Keyword End] {name}".format(name=name),
                         "level": "DEBUG"
