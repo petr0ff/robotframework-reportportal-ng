@@ -206,13 +206,14 @@ class reportportal_listener(object):  # noqa
             if self.top_level_kw_name is None:
                 self.top_level_kw_name = name
                 type = "Test %s" % attributes['type'] if attributes['type'] in ['Setup', 'Teardown'] else "Step"
-                message = {
-                    "message": u"[{type}] {name} [Input data] {data}".format(type=type,
-                                                                             name=name,
-                                                                             data=', '.join(attributes['args'])),
-                    "level": "INFO"
-                }
-                RobotService.log(message=message)
+                if name != "BuiltIn.Log":
+                    message = {
+                        "message": u"[{type}] {name} [Input data] {data}".format(type=type,
+                                                                                 name=name,
+                                                                                 data=', '.join(attributes['args'])),
+                        "level": "INFO"
+                    }
+                    RobotService.log(message=message)
 
     def end_keyword(self, name, attributes):
         """Do additional actions after keyword ends.
