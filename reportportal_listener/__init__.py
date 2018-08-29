@@ -207,13 +207,16 @@ class reportportal_listener(object):  # noqa
                 self.top_level_kw_name = name
                 type = "Test %s" % attributes['type'] if attributes['type'] in ['Setup', 'Teardown'] else "Step"
                 if "BuiltIn.Log" not in name:
-                    exp_result_string = "[Expected result] Get output {output}".format(output=', '.join(attributes['assign'])) if attributes['assign'] else ""
+                    output_data_string = " [Expected result] Get output {output}".format(
+                        output=', '.join(attributes['assign'])) if attributes['assign'] else ""
+                    input_data_string = " [Input data] {input}".format(
+                        input=', '.join(attributes['assign'])) if attributes['args'] else ""
                     message = {
-                        "message": u"[{type}] {name} [Input data] {input} {output}".format(
-                            output=exp_result_string,
+                        "message": u"[{type}] {name}{input}{output}".format(
                             type=type,
                             name=name,
-                            input=', '.join(attributes['args'])),
+                            input=input_data_string,
+                            output=output_data_string),
                         "level": "INFO"
                     }
                     RobotService.log(message=message)
