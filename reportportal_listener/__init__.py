@@ -209,7 +209,7 @@ class reportportal_listener(object):  # noqa
                 if "BuiltIn.Log" not in name:
                     message = {
                         "message": u"[{type}] ${output} {name} [Input data] {input}".format(
-                            output=', '.join(attributes['assign']),
+                            output=', '.join(attributes['assign'].replace("$$", "$")),
                             type=type,
                             name=name,
                             input=', '.join(attributes['args'])),
