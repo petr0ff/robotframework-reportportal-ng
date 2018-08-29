@@ -207,9 +207,10 @@ class reportportal_listener(object):  # noqa
                 self.top_level_kw_name = name
                 type = "Test %s" % attributes['type'] if attributes['type'] in ['Setup', 'Teardown'] else "Step"
                 if "BuiltIn.Log" not in name:
+                    exp_result_string = "[Expected result] Get output {output}".format(output=', '.join(attributes['assign'])) if attributes['assign'] else ""
                     message = {
-                        "message": u"[{type}] ${output} {name} [Input data] {input}".format(
-                            output=', '.join(attributes['assign'][1:]),
+                        "message": u"[{type}] {name} [Input data] {input} {output}".format(
+                            output=exp_result_string,
                             type=type,
                             name=name,
                             input=', '.join(attributes['args'])),
