@@ -66,8 +66,22 @@ class Test(object):
         self.message = None
         if "status" in attributes.keys():
             self.status = attributes["status"]
-        # if "message" in attributes.keys():
-        #     self.message = attributes["message"]
+        if "message" in attributes.keys():
+            self.message = attributes["message"]
+
+    def pretty_print_test_name(self):
+        tc_words = self.name.split("_")
+        if len(tc_words) == 1:
+            return tc_words[0].title()
+        prefix = tc_words[0]
+        tc_id = ""
+        start = 0
+        if prefix.startswith("f"):
+            if len(prefix) > 1:
+                tc_id = prefix.replace("f", "FLOW-")
+            start = 1
+        return "%s %s" % (tc_id, " ".join(tc_words[start:]).title())
+
 
 
 class Keyword(object):

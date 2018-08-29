@@ -160,9 +160,10 @@ class reportportal_listener(object):  # noqa
         """
         test = Test(name=name, attributes=attributes)
         self.current_scope = "TEST"
-        item_id = self.robot_service.start_test(test=test)
+        self.robot_service.start_test(test=test)
+
         message = {
-            "message": u"[Test-case] {name}".format(name=name),
+            "message": u"[Test-case] {name}".format(name=test.pretty_print_test_name()),
             "level": "INFO"
         }
         RobotService.log(message=message)
