@@ -208,9 +208,11 @@ class reportportal_listener(object):  # noqa
                 type = "Test %s" % attributes['type'] if attributes['type'] in ['Setup', 'Teardown'] else "Step"
                 if "BuiltIn.Log" not in name:
                     message = {
-                        "message": u"[{type}] {name} [Input data] {data}".format(type=type,
-                                                                                 name=name,
-                                                                                 data=', '.join(attributes['args'])),
+                        "message": u"[{type}] ${output} {name} [Input data] {input}".format(
+                            output=', '.join(attributes['assign']),
+                            type=type,
+                            name=name,
+                            input=', '.join(attributes['args'])),
                         "level": "INFO"
                     }
                     RobotService.log(message=message)
