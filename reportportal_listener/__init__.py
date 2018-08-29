@@ -206,7 +206,7 @@ class reportportal_listener(object):  # noqa
             if self.top_level_kw_name is None:
                 self.top_level_kw_name = name
                 type = "Test %s" % attributes['type'] if attributes['type'] in ['Setup', 'Teardown'] else "Step"
-                if name != "BuiltIn.Log":
+                if "BuiltIn.Log" not in name:
                     message = {
                         "message": u"[{type}] {name} [Input data] {data}".format(type=type,
                                                                                  name=name,
