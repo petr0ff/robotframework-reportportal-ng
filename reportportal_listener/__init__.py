@@ -210,7 +210,7 @@ class reportportal_listener(object):  # noqa
                     output_data_string = " [Expected result] Get output {output}".format(
                         output=', '.join(attributes['assign'])) if attributes['assign'] else ""
                     input_data_string = " [Input data] {input}".format(
-                        input=', '.join(attributes['assign'])) if attributes['args'] else ""
+                        input=', '.join(attributes['args'])) if attributes['args'] else ""
                     message = {
                         "message": u"[{type}] {name}{input}{output}".format(
                             type=type,
