@@ -65,7 +65,8 @@ class reportportal_listener(object):  # noqa
             message: current message passed from test by test executor.
         """
         black_list = ["check_completed",
-                      "'\"running\"==\"failed\" or \"running\"==\"success\"'"]
+                      "'\"running\"==\"failed\" or \"running\"==\"success\"'",
+                      "Connection with ID default does not exist"]
 
         if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
             message['message'] = "[FAIL] " + message['message']
