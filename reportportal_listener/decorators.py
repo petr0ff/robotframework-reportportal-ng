@@ -17,9 +17,10 @@ def retry(exceptions_to_check, wait=2, retries=3):
             attempts = retries + 1
             for attempt in range(attempts):
                 try:
-                    BuiltIn().log_to_console("TRYING")
+                    BuiltIn().log_to_console("TRYING %d" % attempt)
                     return f(*args, **kwargs)
                 except exceptions_to_check as e:
+                    BuiltIn().log_to_console("GOT EXCEPTION: %s", e)
                     if attempt < retries:
                         BuiltIn().log_to_console("%s, Retrying in %d seconds", e, wait)
                         time.sleep(wait)
