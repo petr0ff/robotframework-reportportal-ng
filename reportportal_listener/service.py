@@ -171,7 +171,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    @retry(exceptions_to_check=(ConnectionError, HTTPError))
+    #@retry(exceptions_to_check=(ConnectionError, HTTPError))
     def start_test(test=None):
         """Start test.
 
@@ -204,7 +204,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
+    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
         """Start keyword.
 
