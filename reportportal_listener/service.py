@@ -2,6 +2,7 @@
 
 import codecs
 import re
+import time as t
 from time import time
 
 from reportportal_client import ReportPortalService
@@ -206,7 +207,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
+    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
         RobotService.builtin_lib().log_to_console("IN KW")
         """Start keyword.
@@ -240,7 +241,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
+    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def log(message, attachment=None):
         RobotService.builtin_lib().log_to_console("IN LOG")
         """Log message in Report Portal.
@@ -260,7 +261,22 @@ class RobotService(object):
             "level": RobotService.log_level_mapping[message["level"]],
             "attachment": attachment,
         }
-        return RobotService.rp.log(**sl_rq)
+
+        retries = 3
+        attempts = retries + 1
+        exceptions_to_check = (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError)
+        for attempt in range(attempts):
+            try:
+                BuiltIn().log_to_console("TRYING %d of %d" % (attempt, attempts))
+                RobotService.rp.log(**sl_rq)
+            except exceptions_to_check as e:
+                BuiltIn().log_to_console("GOT EXCEPTION: %s", e)
+                if attempt < retries:
+                    BuiltIn().log_to_console("%s, Retrying in %d seconds" % (e, 2))
+                    t.sleep(2)
+                else:
+                    BuiltIn().log_to_console('No more retries')
+                    raise
         # try:
         #     RobotService.rp.log(**sl_rq)
         # except ResponseError as e:
