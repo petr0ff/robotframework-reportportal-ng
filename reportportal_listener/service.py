@@ -140,6 +140,7 @@ class RobotService(object):
 
     @staticmethod
     def start_suite(name=None, suite=None):
+        RobotService.builtin_lib().log_to_console("IN SUITE")
         """Start new suite.
 
         Args:
@@ -173,6 +174,7 @@ class RobotService(object):
     @staticmethod
     #@retry(exceptions_to_check=(ConnectionError, HTTPError))
     def start_test(test=None):
+        RobotService.builtin_lib().log_to_console("IN TEST")
         """Start test.
 
         Args:
@@ -205,6 +207,7 @@ class RobotService(object):
     @staticmethod
     #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
+        RobotService.builtin_lib().log_to_console("IN KW")
         """Start keyword.
 
         Args:
