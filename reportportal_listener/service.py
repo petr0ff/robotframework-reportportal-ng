@@ -178,7 +178,6 @@ class RobotService(object):
         Args:
             test: test object model.
         """
-        RobotService.builtin_lib().log_to_console("IN TEST")
         start_rq = {
             "name": test.name,
             "description": test.doc,
@@ -211,7 +210,6 @@ class RobotService(object):
         Args:
             keyword: keyword object model.
         """
-        RobotService.builtin_lib().log_to_console("IN KEYWORD")
         start_rq = {
             "name": keyword.get_name(),
             "description": keyword.doc,
@@ -256,8 +254,9 @@ class RobotService(object):
             "level": RobotService.log_level_mapping[message["level"]],
             "attachment": attachment,
         }
-        try:
-            RobotService.rp.log(**sl_rq)
-        except ResponseError as e:
-            RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
-                                                              "See logs of a certain test.\n{}".format(str(e)))
+        RobotService.rp.log(**sl_rq)
+        # try:
+        #     RobotService.rp.log(**sl_rq)
+        # except ResponseError as e:
+        #     RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
+        #                                                       "See logs of a certain test.\n{}".format(str(e)))
