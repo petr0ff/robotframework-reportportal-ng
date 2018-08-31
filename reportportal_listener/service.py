@@ -7,8 +7,9 @@ from time import time
 from reportportal_client import ReportPortalService
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils import PY2
-from urllib3.exceptions import ResponseError
+from urllib3.exceptions import ResponseError, ConnectionError, HTTPError
 
+from decorators import retry
 from .variables import Variables
 
 # https://stackoverflow.com/a/24519338/720097
@@ -170,6 +171,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError))
     def start_test(test=None):
         """Start test.
 
@@ -201,6 +203,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
         """Start keyword.
 
