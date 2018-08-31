@@ -205,7 +205,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
         RobotService.builtin_lib().log_to_console("IN KW")
         """Start keyword.
