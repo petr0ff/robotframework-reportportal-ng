@@ -152,7 +152,7 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
-    @retry(exceptions_to_check=(ConnectionError, HTTPError))
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError,), wait=2)
     def start_test(self, name, attributes):
         """Do additional actions before test run.
 
@@ -172,6 +172,7 @@ class reportportal_listener(object):  # noqa
         }
         RobotService.log(message=message)
 
+    @retry(exceptions_to_check=(UnicodeEncodeError,), wait=2)
     def end_test(self, name, attributes):
         """Do additional actions after test run.
 
@@ -192,7 +193,7 @@ class reportportal_listener(object):  # noqa
             self.log_message(message=message)
         self.robot_service.finish_test(test=test)
 
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_keyword(self, name, attributes):
         """Do additional actions before keyword starts.
 
