@@ -178,6 +178,7 @@ class RobotService(object):
         Args:
             test: test object model.
         """
+        RobotService.builtin_lib().log_to_console("IN TEST")
         start_rq = {
             "name": test.name,
             "description": test.doc,
@@ -210,6 +211,7 @@ class RobotService(object):
         Args:
             keyword: keyword object model.
         """
+        RobotService.builtin_lib().log_to_console("IN KEYWORD")
         start_rq = {
             "name": keyword.get_name(),
             "description": keyword.doc,
@@ -235,6 +237,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def log(message, attachment=None):
         """Log message in Report Portal.
 
