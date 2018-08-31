@@ -71,7 +71,7 @@ class reportportal_listener(object):  # noqa
                       "Connection with ID default does not exist"]
 
         if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
-            message['message'] = "[FAIL] " + message['message']
+            message['message'] = "!!!MARKDOWN_MODE!!!**[FAIL]** `%s`" % message['message']
             attachment = None
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
@@ -167,7 +167,7 @@ class reportportal_listener(object):  # noqa
         self.robot_service.start_test(test=test)
 
         message = {
-            "message": u"!!!MARKDOWN_MODE!!!**[Test-case] {name}**".format(name=test.pretty_print_test_name()),
+            "message": u"!!!MARKDOWN_MODE!!!#**[Test-case] {name}**".format(name=test.pretty_print_test_name()),
             "level": "INFO"
         }
         RobotService.log(message=message)
@@ -187,7 +187,7 @@ class reportportal_listener(object):  # noqa
         if self._suite_setup_failed:
             # If test failed because of failing suite setup, output log message with error severity.
             message = {
-                "message": u"[ERROR] Suite Setup failed!",
+                "message": u"!!!MARKDOWN_MODE!!!##**[ERROR] Suite Setup failed!**",
                 "level": "FAIL"
             }
             self.log_message(message=message)
@@ -222,7 +222,7 @@ class reportportal_listener(object):  # noqa
                         name = name.split(".")[-1]
 
                     message = {
-                        "message": u"[{type}] {name}{input}{output}".format(
+                        "message": u"!!!MARKDOWN_MODE!!!**[{type}]** `{name}{input}{output}`".format(
                             type=type,
                             name=name,
                             input=input_data_string,
