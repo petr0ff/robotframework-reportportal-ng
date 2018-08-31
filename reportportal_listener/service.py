@@ -188,7 +188,11 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": "STEP"
         }
-        return RobotService.rp.start_test_item(**start_rq)
+
+        try:
+            return RobotService.rp.start_test_item(**start_rq)
+        except (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,) as e:
+            BuiltIn().log_to_console("START TEST GOT EXCEPTION: %s", e)
 
     @staticmethod
     def finish_test(issue=None, test=None):
@@ -222,7 +226,11 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": keyword.get_type()
         }
-        RobotService.rp.start_test_item(**start_rq)
+        try:
+            RobotService.rp.start_test_item(**start_rq)
+        except (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,) as e:
+            BuiltIn().log_to_console("START KW GOT EXCEPTION: %s", e)
+
 
     @staticmethod
     def finish_keyword(issue=None, keyword=None):
