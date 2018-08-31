@@ -240,8 +240,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def log(message, attachment=None):
         RobotService.builtin_lib().log_to_console("IN LOG")
         """Log message in Report Portal.
