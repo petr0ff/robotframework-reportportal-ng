@@ -269,6 +269,7 @@ class RobotService(object):
             try:
                 BuiltIn().log_to_console("TRYING %d of %d" % (attempt, attempts))
                 RobotService.rp.log(**sl_rq)
+                break
             except exceptions_to_check as e:
                 BuiltIn().log_to_console("GOT EXCEPTION: %s", e)
                 if attempt < retries:
