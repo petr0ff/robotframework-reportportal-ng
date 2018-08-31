@@ -6,7 +6,7 @@ import time
 from robot.libraries.BuiltIn import BuiltIn
 
 
-def retry(exceptions_to_check, wait=2, retries=3):
+def retry(exceptions_to_check=(Exception,), wait=2, retries=3):
     """Decorator that provides retrying wrapped function in case of exception_to_check exception."""
 
     def wrapped_retry(f):
