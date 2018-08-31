@@ -167,7 +167,7 @@ class reportportal_listener(object):  # noqa
         self.robot_service.start_test(test=test)
 
         message = {
-            "message": u"!!!MARKDOWN_MODE!!!#[Test-case] {name}".format(name=test.pretty_print_test_name()),
+            "message": u"!!!MARKDOWN_MODE!!!# [Test-case] {name}".format(name=test.pretty_print_test_name()),
             "level": "INFO"
         }
         RobotService.log(message=message)
@@ -187,7 +187,7 @@ class reportportal_listener(object):  # noqa
         if self._suite_setup_failed:
             # If test failed because of failing suite setup, output log message with error severity.
             message = {
-                "message": u"!!!MARKDOWN_MODE!!!##[ERROR] Suite Setup failed!",
+                "message": u"!!!MARKDOWN_MODE!!!## [ERROR] Suite Setup failed!",
                 "level": "FAIL"
             }
             self.log_message(message=message)
