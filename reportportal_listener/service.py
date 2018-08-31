@@ -237,6 +237,7 @@ class RobotService(object):
     @staticmethod
     @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def log(message, attachment=None):
+        RobotService.builtin_lib().log_to_console("IN LOG")
         """Log message in Report Portal.
 
         Args:
@@ -254,7 +255,7 @@ class RobotService(object):
             "level": RobotService.log_level_mapping[message["level"]],
             "attachment": attachment,
         }
-        RobotService.rp.log(**sl_rq)
+        return RobotService.rp.log(**sl_rq)
         # try:
         #     RobotService.rp.log(**sl_rq)
         # except ResponseError as e:
