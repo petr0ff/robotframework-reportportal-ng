@@ -10,19 +10,14 @@ def retry(exceptions_to_check=(Exception,), wait=2, retries=3):
     """Decorator that provides retrying wrapped function in case of exception_to_check exception."""
 
     def wrapped_retry(f):
-        BuiltIn().log_to_console("IN RETRYYYY")
 
         @six.wraps(f)
         def wrapped_f(*args, **kwargs):
             attempts = retries + 1
             for attempt in range(attempts):
                 try:
-                    BuiltIn().log_to_console("TRYING %d of %d" % (attempt, attempts))
-                    data = f(*args, **kwargs)
-                    BuiltIn().log_to_console("ATA %s" % data)
-                    return data
+                    return f(*args, **kwargs)
                 except exceptions_to_check as e:
-                    BuiltIn().log_to_console("GOT EXCEPTION: %s", e)
                     if attempt < retries:
                         BuiltIn().log_to_console("%s, Retrying in %d seconds" % (e, wait))
                         time.sleep(wait)

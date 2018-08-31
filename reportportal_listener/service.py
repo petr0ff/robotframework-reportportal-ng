@@ -2,15 +2,13 @@
 
 import codecs
 import re
-import time as t
 from time import time
 
 from reportportal_client import ReportPortalService
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils import PY2
-from urllib3.exceptions import ResponseError, ConnectionError, HTTPError
+from urllib3.exceptions import ResponseError
 
-from decorators import retry
 from .variables import Variables
 
 # https://stackoverflow.com/a/24519338/720097
@@ -141,7 +139,6 @@ class RobotService(object):
 
     @staticmethod
     def start_suite(name=None, suite=None):
-        RobotService.builtin_lib().log_to_console("IN SUITE")
         """Start new suite.
 
         Args:
@@ -173,9 +170,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    #@retry(exceptions_to_check=(ConnectionError, HTTPError))
     def start_test(test=None):
-        RobotService.builtin_lib().log_to_console("IN TEST")
         """Start test.
 
         Args:
@@ -188,15 +183,10 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": "STEP"
         }
-
-        try:
-            return RobotService.rp.start_test_item(**start_rq)
-        except (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,) as e:
-            BuiltIn().log_to_console("START TEST GOT EXCEPTION: %s", e)
+        return RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
     def finish_test(issue=None, test=None):
-        RobotService.builtin_lib().log_to_console("OUT TEST")
         """Finish test.
 
         Args:
@@ -211,9 +201,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(keyword=None):
-        RobotService.builtin_lib().log_to_console("IN KW")
         """Start keyword.
 
         Args:
@@ -226,15 +214,10 @@ class RobotService(object):
             "start_time": timestamp(),
             "item_type": keyword.get_type()
         }
-        try:
-            RobotService.rp.start_test_item(**start_rq)
-        except (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,) as e:
-            BuiltIn().log_to_console("START KW GOT EXCEPTION: %s", e)
-
+        RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
     def finish_keyword(issue=None, keyword=None):
-        RobotService.builtin_lib().log_to_console("OUT KW")
         """Finish keyword.
 
         Args:
@@ -249,9 +232,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
-    #@retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def log(message, attachment=None):
-        RobotService.builtin_lib().log_to_console("IN LOG")
         """Log message in Report Portal.
 
         Args:
@@ -269,25 +250,8 @@ class RobotService(object):
             "level": RobotService.log_level_mapping[message["level"]],
             "attachment": attachment,
         }
-
-        retries = 3
-        attempts = retries + 1
-        exceptions_to_check = (ConnectionError, HTTPError, UnicodeEncodeError, ResponseError)
-        for attempt in range(attempts):
-            try:
-                BuiltIn().log_to_console("TRYING %d of %d" % (attempt, attempts))
-                RobotService.rp.log(**sl_rq)
-                break
-            except exceptions_to_check as e:
-                BuiltIn().log_to_console("GOT EXCEPTION: %s", e)
-                if attempt < retries:
-                    BuiltIn().log_to_console("%s, Retrying in %d seconds" % (e, 2))
-                    t.sleep(2)
-                else:
-                    BuiltIn().log_to_console('No more retries')
-                    raise
-        # try:
-        #     RobotService.rp.log(**sl_rq)
-        # except ResponseError as e:
-        #     RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
-        #                                                       "See logs of a certain test.\n{}".format(str(e)))
+        try:
+            RobotService.rp.log(**sl_rq)
+        except ResponseError as e:
+            RobotService.builtin_lib().log_to_console(message="RobotService.rp.log failed with ResponseError. "
+                                                              "See logs of a certain test.\n{}".format(str(e)))

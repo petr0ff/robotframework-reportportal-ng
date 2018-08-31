@@ -3,6 +3,7 @@
 import logging
 import re
 import os
+from urllib3.exceptions import ResponseError, ConnectionError, HTTPError
 
 from mimetypes import guess_type
 
@@ -11,6 +12,7 @@ from robot.libraries.BuiltIn import BuiltIn
 from .model import Keyword, Test, Suite
 from .service import RobotService
 from .variables import Variables
+from decorators import retry
 
 # First suite key name in html robot framework html log
 FIRST_SUITE_ID = "s1"
@@ -150,6 +152,7 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
+    @retry(exceptions_to_check=(ConnectionError, HTTPError))
     def start_test(self, name, attributes):
         """Do additional actions before test run.
 
@@ -189,6 +192,7 @@ class reportportal_listener(object):  # noqa
             self.log_message(message=message)
         self.robot_service.finish_test(test=test)
 
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError))
     def start_keyword(self, name, attributes):
         """Do additional actions before keyword starts.
 
