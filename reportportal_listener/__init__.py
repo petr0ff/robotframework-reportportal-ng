@@ -172,7 +172,7 @@ class reportportal_listener(object):  # noqa
         }
         RobotService.log(message=message)
 
-    @retry(exceptions_to_check=(UnicodeEncodeError,), wait=2)
+    @retry(exceptions_to_check=(ConnectionError, UnicodeEncodeError,), wait=2)
     def end_test(self, name, attributes):
         """Do additional actions after test run.
 
