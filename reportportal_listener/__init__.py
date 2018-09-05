@@ -95,6 +95,7 @@ class reportportal_listener(object):  # noqa
                                         project=self.robot_variables.project,
                                         uuid=self.robot_variables.uuid)
 
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError,))
     def start_suite(self, name, attributes):
         """Do additional actions before suite start.
 
@@ -128,6 +129,7 @@ class reportportal_listener(object):  # noqa
         if attributes['tests']:
             self.robot_service.start_suite(name=attributes['longname'], suite=suite)
 
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError,))
     def end_suite(self, name, attributes):
         """Do additional actions after suite run.
 
@@ -152,7 +154,7 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError,), wait=2)
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError,))
     def start_test(self, name, attributes):
         """Do additional actions before test run.
 
@@ -172,7 +174,7 @@ class reportportal_listener(object):  # noqa
         }
         RobotService.log(message=message)
 
-    @retry(exceptions_to_check=(ConnectionError, UnicodeEncodeError,), wait=2)
+    @retry(exceptions_to_check=(ConnectionError, UnicodeEncodeError,))
     def end_test(self, name, attributes):
         """Do additional actions after test run.
 
