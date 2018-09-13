@@ -71,7 +71,7 @@ class reportportal_listener(object):  # noqa
                       "Connection with ID default does not exist"]
 
         if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
-            message['message'] = "!!!MARKDOWN_MODE!!!**[FAIL]** `%s`" % message['message']
+            message['message'] = "!!!MARKDOWN_MODE!!!**[FAIL]** ```%s```" % message['message']
             attachment = None
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
