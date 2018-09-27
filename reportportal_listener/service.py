@@ -7,8 +7,9 @@ from time import time
 from reportportal_client import ReportPortalService
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils import PY2
-from urllib3.exceptions import ResponseError
+from urllib3.exceptions import ResponseError, ConnectionError, HTTPError
 
+from decorators import retry
 from .variables import Variables
 
 # https://stackoverflow.com/a/24519338/720097
@@ -104,6 +105,7 @@ class RobotService(object):
             RobotService.rp.terminate()
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_launch(launch_name, mode=None, launch=None):
         """Register new launch in Report Portal.
 
@@ -125,6 +127,7 @@ class RobotService(object):
         return RobotService.rp.start_launch(**sl_pt)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def finish_launch(launch=None):
         """Finish launch.
 
@@ -138,6 +141,7 @@ class RobotService(object):
         RobotService.rp.finish_launch(**fl_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_suite(name=None, suite=None):
         """Start new suite.
 
@@ -155,6 +159,7 @@ class RobotService(object):
         RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def finish_suite(issue=None, suite=None):
         """Close suite.
 
@@ -170,6 +175,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_test(test=None):
         """Start test.
 
@@ -186,6 +192,7 @@ class RobotService(object):
         return RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def finish_test(issue=None, test=None):
         """Finish test.
 
@@ -201,6 +208,7 @@ class RobotService(object):
         RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_keyword(keyword=None):
         """Start keyword.
 
@@ -217,6 +225,7 @@ class RobotService(object):
         RobotService.rp.start_test_item(**start_rq)
 
     @staticmethod
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def finish_keyword(issue=None, keyword=None):
         """Finish keyword.
 
