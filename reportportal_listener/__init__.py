@@ -131,7 +131,7 @@ class reportportal_listener(object):  # noqa
             self.robot_service.start_suite(name=attributes['longname'], suite=suite)
 
     @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
-    def end_suite(self, attributes):
+    def end_suite(self, name, attributes):
         """Do additional actions after suite run.
 
         Close report portal launch or finish current suite with corresponding status.
