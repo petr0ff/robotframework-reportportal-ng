@@ -3,7 +3,7 @@
 import logging
 import re
 import os
-from urllib3.exceptions import ResponseError, ConnectionError, HTTPError
+from urllib3.exceptions import ResponseError, ConnectionError, HTTPError, NewConnectionError
 
 from mimetypes import guess_type
 
@@ -58,7 +58,6 @@ class reportportal_listener(object):  # noqa
             self._pabot_used = self.builtin_lib.get_variable_value(name='${PABOTLIBURI}')
         return self._pabot_used
 
-    @retry
     def log_message(self, message):
         """Log message of current executing keyword.
 
@@ -96,7 +95,7 @@ class reportportal_listener(object):  # noqa
                                         project=self.robot_variables.project,
                                         uuid=self.robot_variables.uuid)
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError, NewConnectionError))
     def start_suite(self, name, attributes):
         """Do additional actions before suite start.
 
@@ -130,7 +129,7 @@ class reportportal_listener(object):  # noqa
         if attributes['tests']:
             self.robot_service.start_suite(name=attributes['longname'], suite=suite)
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError,))
     def end_suite(self, name, attributes):
         """Do additional actions after suite run.
 
@@ -155,7 +154,7 @@ class reportportal_listener(object):  # noqa
             # terminating service
             self.robot_service.terminate_service()
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_test(self, name, attributes):
         """Do additional actions before test run.
 
@@ -175,7 +174,7 @@ class reportportal_listener(object):  # noqa
         }
         RobotService.log(message=message)
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, UnicodeEncodeError, ResponseError,))
     def end_test(self, name, attributes):
         """Do additional actions after test run.
 
@@ -196,7 +195,7 @@ class reportportal_listener(object):  # noqa
             self.log_message(message=message)
         self.robot_service.finish_test(test=test)
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def start_keyword(self, name, attributes):
         """Do additional actions before keyword starts.
 
@@ -234,7 +233,7 @@ class reportportal_listener(object):  # noqa
                     }
                     RobotService.log(message=message)
 
-    @retry
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
     def end_keyword(self, name, attributes):
         """Do additional actions after keyword ends.
 
