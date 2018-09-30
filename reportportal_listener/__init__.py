@@ -71,7 +71,7 @@ class reportportal_listener(object):  # noqa
                       "Connection with ID default does not exist"]
 
         if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
-            message['message'] = "!!!MARKDOWN_MODE!!!**[FAIL]**\n```\n%s\n```" % message['message']
+            message['message'] = "!!!MARKDOWN_MODE!!! **[FAIL]**\n```\n%s\n```" % message['message']
             attachment = None
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
@@ -95,7 +95,7 @@ class reportportal_listener(object):  # noqa
                                         project=self.robot_variables.project,
                                         uuid=self.robot_variables.uuid)
 
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError, NewConnectionError))
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError, NewConnectionError, UnicodeEncodeError))
     def start_suite(self, name, attributes):
         """Do additional actions before suite start.
 
@@ -129,7 +129,7 @@ class reportportal_listener(object):  # noqa
         if attributes['tests']:
             self.robot_service.start_suite(name=attributes['longname'], suite=suite)
 
-    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError,))
+    @retry(exceptions_to_check=(ConnectionError, HTTPError, ResponseError, UnicodeEncodeError,))
     def end_suite(self, name, attributes):
         """Do additional actions after suite run.
 
