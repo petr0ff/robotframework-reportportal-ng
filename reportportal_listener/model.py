@@ -83,7 +83,6 @@ class Test(object):
         return "%s %s" % (tc_id, " ".join(tc_words[start:]).title())
 
 
-
 class Keyword(object):
     """Keyword object in Report Portal."""
 
