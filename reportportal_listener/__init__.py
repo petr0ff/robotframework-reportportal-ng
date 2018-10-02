@@ -189,7 +189,7 @@ class reportportal_listener(object):  # noqa
         if self._suite_setup_failed:
             # If test failed because of failing suite setup, output log message with error severity.
             message = {
-                "message": u"!!!MARKDOWN_MODE!!! ## [ERROR] Suite Setup failed!",
+                "message": u"[ERROR] Suite Setup failed!",
                 "level": "FAIL"
             }
             self.log_message(message=message)
