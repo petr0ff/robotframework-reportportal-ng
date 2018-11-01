@@ -194,6 +194,8 @@ class RobotService(object):
             issue: issue number, automatically linked for log.
             test: test object model.
         """
+        if "[FAIL]" in test.message:
+            test.doc = test.message
         fta_rq = {
             "end_time": timestamp(),
             "status": RobotService.status_mapping[test.status],
