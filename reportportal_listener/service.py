@@ -5,7 +5,6 @@ import re
 from time import time
 
 from reportportal_client import ReportPortalService
-from reportportal_client.service import logger, uri_join
 from robot.libraries.BuiltIn import BuiltIn
 from robot.utils import PY2
 from urllib3.exceptions import ResponseError
@@ -197,13 +196,9 @@ class RobotService(object):
         fta_rq = {
             "end_time": timestamp(),
             "status": RobotService.status_mapping[test.status],
-            "issue": issue,
-            "description": test.doc
+            "issue": issue
         }
-
-        item_id = RobotService.rp.stack.pop()
-        url = uri_join(RobotService.rp.base_url, "item", item_id)
-        RobotService.rp.session.put(url=url, json=fta_rq)
+        RobotService.rp.finish_test_item(**fta_rq)
 
     @staticmethod
     def start_keyword(keyword=None):
