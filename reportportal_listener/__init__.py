@@ -58,7 +58,7 @@ class reportportal_listener(object):  # noqa
             self._pabot_used = self.builtin_lib.get_variable_value(name='${PABOTLIBURI}')
         return self._pabot_used
 
-    def log_message(self, message):
+    def log_message(self, message, test):
         """Log message of current executing keyword.
 
         This method sends each test log message to Report Portal.
@@ -73,6 +73,7 @@ class reportportal_listener(object):  # noqa
         if message.get('level', 'no') == 'FAIL' and not any(x in message['message'] for x in black_list):
             message['message'] = "!!!MARKDOWN_MODE!!! **[FAIL]**\n```\n%s\n```" % message['message']
             attachment = None
+            test.doc = message['message']
             if message.get('html', 'no') == 'yes':
                 screenshot = re.search('[a-z]+-[a-z]+-[0-9]+.png', message['message'])
                 if screenshot:
@@ -86,6 +87,7 @@ class reportportal_listener(object):  # noqa
                         }
 
             RobotService.log(message, attachment)
+            return test
 
     def _init_service(self):
         """Init report portal service."""
@@ -192,7 +194,7 @@ class reportportal_listener(object):  # noqa
                 "message": u"[ERROR] Suite Setup failed!",
                 "level": "FAIL"
             }
-            self.log_message(message=message)
+            test = self.log_message(message=message, test=test)
         self.robot_service.finish_test(test=test)
 
     @retry(exceptions_to_check=(ConnectionError, HTTPError, UnicodeEncodeError, ResponseError,))
