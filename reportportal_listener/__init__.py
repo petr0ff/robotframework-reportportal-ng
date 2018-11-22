@@ -44,6 +44,7 @@ class reportportal_listener(object):  # noqa
         self._launch_id = launch_id
         self._pabot_used = None
         self._suite_setup_failed = False
+        self._suite_setup_error_message = None
         self._log_nested_keywords = True
         self._test_level_keyword_fail = False
 
@@ -189,7 +190,7 @@ class reportportal_listener(object):  # noqa
         if self._suite_setup_failed:
             # If test failed because of failing suite setup, output log message with error severity.
             message = {
-                "message": u"[ERROR] Suite Setup failed!",
+                "message": u"[ERROR] Suite Setup failed!" if self._suite_setup_error_message is None else self._suite_setup_error_message,
                 "level": "FAIL"
             }
             self.log_message(message=message)
@@ -248,7 +249,9 @@ class reportportal_listener(object):  # noqa
             # We can add additional information to test if suite setup failed
             # to help analyzer mark those with proper type.
             if kw.status == 'FAIL':
+                self._suite_setup_error_message = attributes.get("message")
                 self._suite_setup_failed = True
+
             self.robot_service.finish_keyword(keyword=kw)
         else:
             if self.top_level_kw_name == name:
