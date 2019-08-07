@@ -9,10 +9,10 @@ from mimetypes import guess_type
 
 from robot.libraries.BuiltIn import BuiltIn
 
-from .model import Keyword, Test, Suite
-from .service import RobotService
-from .variables import Variables
-from decorators import retry
+from reportportal_listener.model import Keyword, Test, Suite
+from reportportal_listener.service import RobotService
+from reportportal_listener.variables import Variables
+from reportportal_listener.decorators import retry
 
 # First suite key name in html robot framework html log
 FIRST_SUITE_ID = "s1"
